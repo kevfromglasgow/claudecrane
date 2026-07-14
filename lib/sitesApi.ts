@@ -52,6 +52,25 @@ export async function createSite(input: Omit<TowerInstance, 'siteId'>): Promise<
   return rowToTowerInstance(data as SiteRow);
 }
 
+/** Bulk insert, for CSV import — one round trip instead of one per row. */
+export async function createSitesBulk(inputs: Omit<TowerInstance, 'siteId'>[]): Promise<TowerInstance[]> {
+  if (inputs.length === 0) return [];
+  const { data, error } = await getSupabase()
+    .from('sites')
+    .insert(
+      inputs.map((input) => ({
+        label: input.label,
+        family_id: input.familyId,
+        variant_id: input.variantId,
+        leg_extension_delta_m: input.legExtensionDeltaM,
+        notes: input.notes ?? null,
+      }))
+    )
+    .select();
+  if (error) throw error;
+  return (data as SiteRow[]).map(rowToTowerInstance);
+}
+
 export async function deleteSite(siteId: string): Promise<void> {
   const { error } = await getSupabase().from('sites').delete().eq('site_id', siteId);
   if (error) throw error;

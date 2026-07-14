@@ -3,8 +3,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { TOWER_FAMILIES, getTowerFamily } from '../../lib/towerFamilies';
 import { listLiftableComponents } from '../../lib/calculations/towerWeight';
-import { listSites, createSite, deleteSite } from '../../lib/sitesApi';
+import { listSites, createSite, createSitesBulk, deleteSite } from '../../lib/sitesApi';
 import { isSupabaseConfigured } from '../../lib/supabaseClient';
+import { parseSitesCsv, type SiteCsvRowResult } from '../../lib/sitesCsvImport';
 import type { TowerInstance, LiftableComponent } from '../../lib/types';
 
 export default function SitesPage() {
@@ -12,6 +13,10 @@ export default function SitesPage() {
   const [sites, setSites] = useState<TowerInstance[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [csvRows, setCsvRows] = useState<SiteCsvRowResult[] | null>(null);
+  const [csvImporting, setCsvImporting] = useState(false);
+  const [csvFileName, setCsvFileName] = useState<string | null>(null);
 
   const [label, setLabel] = useState('');
   const [familyId, setFamilyId] = useState(TOWER_FAMILIES[0].familyId);
@@ -60,6 +65,36 @@ export default function SitesPage() {
       await refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete site');
+    }
+  }
+
+  function handleCsvFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setCsvFileName(file.name);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = reader.result as string;
+      setCsvRows(parseSitesCsv(text));
+    };
+    reader.readAsText(file);
+  }
+
+  async function handleConfirmCsvImport() {
+    if (!csvRows) return;
+    const validInputs = csvRows.filter((r) => r.resolved).map((r) => r.resolved!);
+    if (validInputs.length === 0) return;
+    setCsvImporting(true);
+    setError(null);
+    try {
+      await createSitesBulk(validInputs);
+      setCsvRows(null);
+      setCsvFileName(null);
+      await refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Bulk import failed');
+    } finally {
+      setCsvImporting(false);
     }
   }
 
@@ -178,6 +213,78 @@ export default function SitesPage() {
               Create site
             </button>
           </form>
+
+          <div className="rounded-lg border border-stone-200 bg-white p-5">
+            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-stone-500">Bulk import from CSV</h2>
+            <p className="mb-3 text-xs text-stone-500">
+              Columns: <code className="rounded bg-stone-100 px-1">Label</code>,{' '}
+              <code className="rounded bg-stone-100 px-1">Tower family</code>,{' '}
+              <code className="rounded bg-stone-100 px-1">Height variant</code>,{' '}
+              <code className="rounded bg-stone-100 px-1">Leg Extension</code>. Family/variant names are matched
+              loosely (spacing/case/underscores don&rsquo;t matter), so values copied straight out of a spreadsheet
+              should work.
+            </p>
+            <input type="file" accept=".csv,text/csv" onChange={handleCsvFileChange} className="text-sm" />
+
+            {csvRows && (
+              <div className="mt-4 space-y-3">
+                <p className="text-sm text-stone-600">
+                  {csvFileName}: <strong>{csvRows.filter((r) => r.resolved).length}</strong> of {csvRows.length} rows
+                  ready to import
+                  {csvRows.some((r) => !r.resolved) && (
+                    <span className="text-red-700"> &mdash; {csvRows.filter((r) => !r.resolved).length} row(s) have errors</span>
+                  )}
+                  .
+                </p>
+
+                <div className="max-h-64 overflow-y-auto rounded border border-stone-200">
+                  <table className="w-full text-left text-xs">
+                    <thead className="sticky top-0 bg-stone-50">
+                      <tr className="border-b border-stone-200 uppercase tracking-wide text-stone-500">
+                        <th className="px-2 py-1">Row</th>
+                        <th className="px-2 py-1">Label</th>
+                        <th className="px-2 py-1">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {csvRows.map((r) => (
+                        <tr key={r.rowNumber} className="border-b border-stone-100">
+                          <td className="px-2 py-1">{r.rowNumber}</td>
+                          <td className="px-2 py-1">{r.raw['Label'] || <em className="text-stone-400">(blank)</em>}</td>
+                          <td className="px-2 py-1">
+                            {r.resolved ? (
+                              <span className="text-green-700">OK</span>
+                            ) : (
+                              <span className="text-red-700">{r.errors.join('; ')}</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleConfirmCsvImport}
+                    disabled={csvImporting || csvRows.every((r) => !r.resolved)}
+                    className="rounded bg-stone-800 px-3 py-2 text-sm font-medium text-white disabled:opacity-40"
+                  >
+                    {csvImporting ? 'Importing…' : `Import ${csvRows.filter((r) => r.resolved).length} valid site(s)`}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setCsvRows(null);
+                      setCsvFileName(null);
+                    }}
+                    className="rounded border border-stone-300 px-3 py-2 text-sm"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="rounded-lg border border-stone-200 bg-white p-5">
             <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-stone-500">Existing sites</h2>

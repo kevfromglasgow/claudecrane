@@ -179,3 +179,11 @@ Plan Bracing at M4.8 Level on E3 Tower (Plan H-H): ... kg
 ## A note on how this project's files persist between sessions
 
 This coding sandbox resets between conversation turns — anything I only save to my own scratch workspace disappears. The `/mnt/user-data/outputs/lift-planner` folder (and the zip) are what actually persist and are what I restore from at the start of each new piece of work. Practically: whatever zip I hand you at the end of a session is the real, current state of the project — if you download and unzip a new one, it supersedes anything from earlier messages.
+
+## Session 6 — CSV bulk import for sites, and the production roadmap
+
+- `lib/sitesCsvImport.ts` — parses a `Label, Tower family, Height variant, Leg Extension` CSV into validated inputs, with forgiving fuzzy matching on family/variant names (spacing/case/underscore-insensitive) and per-row error reporting before anything is written. 11 new unit tests.
+- `lib/sitesApi.ts` gained `createSitesBulk` for a single round-trip bulk insert.
+- `/sites` now has a full upload → preview (per-row OK/error) → confirm-import flow.
+- `sites-template.csv` — a starter file with one example row per format quirk (plain family name, leg extension variants).
+- Full production roadmap written up in `ROADMAP.md` — phased plan covering component dimensions/lift-points + persistent lift records, site geometry (coordinates/pads/footprint), telehandler-vs-crane selection, bolted composite lifts, multi-crane fleet search, and the deferred top-and-tail two-crane geometry — with exactly what's needed from the user at each phase and in what format.
