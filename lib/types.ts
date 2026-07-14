@@ -301,6 +301,18 @@ export interface TowerInstance {
   familyId: string;
   variantId: string;
   legExtensionDeltaM: number;
+  /**
+   * Real-world tower centre coordinate and bearing, for placing this
+   * site's crane pad / telehandler pad / laydown / footprint via its
+   * family's SiteLayoutTemplate (see lib/calculations/siteGeometry.ts).
+   * Optional since not every site will have surveyed geometry entered
+   * yet — sites without these just can't use the radius-from-geometry
+   * features, everything else still works.
+   */
+  towerCentreEasting?: number;
+  towerCentreNorthing?: number;
+  /** degrees clockwise from north — see siteGeometry.ts for the exact convention */
+  bearingDeg?: number;
   notes?: string;
 }
 

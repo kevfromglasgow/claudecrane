@@ -1,10 +1,11 @@
 // ============================================================
 // lib/sitesApi.ts
 //
-// Typed CRUD over Supabase's `sites` table (see sql/schema.sql),
-// converting between Postgres's snake_case columns and the app's
-// TowerInstance shape. Kept separate from lib/calculations/* since
-// this does real I/O — calculations stay pure/testable, this doesn't.
+// Typed CRUD over Supabase's `sites` table (see sql/schema.sql +
+// sql/migration_002_add_site_geometry.sql), converting between
+// Postgres's snake_case columns and the app's TowerInstance shape.
+// Kept separate from lib/calculations/* since this does real I/O —
+// calculations stay pure/testable, this doesn't.
 // ============================================================
 
 import { getSupabase } from './supabaseClient';
@@ -16,6 +17,9 @@ interface SiteRow {
   family_id: string;
   variant_id: string;
   leg_extension_delta_m: number;
+  tower_centre_easting: number | null;
+  tower_centre_northing: number | null;
+  bearing_deg: number | null;
   notes: string | null;
 }
 
@@ -26,7 +30,23 @@ function rowToTowerInstance(row: SiteRow): TowerInstance {
     familyId: row.family_id,
     variantId: row.variant_id,
     legExtensionDeltaM: row.leg_extension_delta_m,
+    towerCentreEasting: row.tower_centre_easting ?? undefined,
+    towerCentreNorthing: row.tower_centre_northing ?? undefined,
+    bearingDeg: row.bearing_deg ?? undefined,
     notes: row.notes ?? undefined,
+  };
+}
+
+function towerInstanceToRow(input: Omit<TowerInstance, 'siteId'>) {
+  return {
+    label: input.label,
+    family_id: input.familyId,
+    variant_id: input.variantId,
+    leg_extension_delta_m: input.legExtensionDeltaM,
+    tower_centre_easting: input.towerCentreEasting ?? null,
+    tower_centre_northing: input.towerCentreNorthing ?? null,
+    bearing_deg: input.bearingDeg ?? null,
+    notes: input.notes ?? null,
   };
 }
 
@@ -37,17 +57,7 @@ export async function listSites(): Promise<TowerInstance[]> {
 }
 
 export async function createSite(input: Omit<TowerInstance, 'siteId'>): Promise<TowerInstance> {
-  const { data, error } = await getSupabase()
-    .from('sites')
-    .insert({
-      label: input.label,
-      family_id: input.familyId,
-      variant_id: input.variantId,
-      leg_extension_delta_m: input.legExtensionDeltaM,
-      notes: input.notes ?? null,
-    })
-    .select()
-    .single();
+  const { data, error } = await getSupabase().from('sites').insert(towerInstanceToRow(input)).select().single();
   if (error) throw error;
   return rowToTowerInstance(data as SiteRow);
 }
@@ -57,18 +67,28 @@ export async function createSitesBulk(inputs: Omit<TowerInstance, 'siteId'>[]): 
   if (inputs.length === 0) return [];
   const { data, error } = await getSupabase()
     .from('sites')
-    .insert(
-      inputs.map((input) => ({
-        label: input.label,
-        family_id: input.familyId,
-        variant_id: input.variantId,
-        leg_extension_delta_m: input.legExtensionDeltaM,
-        notes: input.notes ?? null,
-      }))
-    )
+    .insert(inputs.map(towerInstanceToRow))
     .select();
   if (error) throw error;
   return (data as SiteRow[]).map(rowToTowerInstance);
+}
+
+export async function updateSiteGeometry(
+  siteId: string,
+  geometry: { towerCentreEasting: number; towerCentreNorthing: number; bearingDeg: number }
+): Promise<TowerInstance> {
+  const { data, error } = await getSupabase()
+    .from('sites')
+    .update({
+      tower_centre_easting: geometry.towerCentreEasting,
+      tower_centre_northing: geometry.towerCentreNorthing,
+      bearing_deg: geometry.bearingDeg,
+    })
+    .eq('site_id', siteId)
+    .select()
+    .single();
+  if (error) throw error;
+  return rowToTowerInstance(data as SiteRow);
 }
 
 export async function deleteSite(siteId: string): Promise<void> {

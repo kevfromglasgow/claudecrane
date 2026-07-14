@@ -187,3 +187,12 @@ This coding sandbox resets between conversation turns — anything I only save t
 - `/sites` now has a full upload → preview (per-row OK/error) → confirm-import flow.
 - `sites-template.csv` — a starter file with one example row per format quirk (plain family name, leg extension variants).
 - Full production roadmap written up in `ROADMAP.md` — phased plan covering component dimensions/lift-points + persistent lift records, site geometry (coordinates/pads/footprint), telehandler-vs-crane selection, bolted composite lifts, multi-crane fleet search, and the deferred top-and-tail two-crane geometry — with exactly what's needed from the user at each phase and in what format.
+
+## Session 7 — Site geometry groundwork (rotation math, ahead of the DXF template)
+
+Confirmed: Option B (template-per-family + bearing-per-site), since the layout genuinely is identical per tower type.
+
+- `lib/calculations/siteGeometry.ts` — the rotation transform that turns a family's local (template-frame) points into real-world (easting, northing) coordinates given a site's tower centre + bearing. Uses an **azimuth-style rotation** (clockwise from north), not the standard counter-clockwise math convention — verified against every quarter-turn (0°/90°/180°/270°) plus 45° and 360°-wraps, and checked that rotation never changes a point's distance from the tower centre (15 tests).
+- `TowerInstance` gained optional `towerCentreEasting`/`towerCentreNorthing`/`bearingDeg` fields — optional so existing sites without surveyed geometry keep working for everything that doesn't need it.
+- `sql/migration_002_add_site_geometry.sql` — `ALTER TABLE` migration (not a fresh `CREATE TABLE`, since the `sites` table already exists) adding the three new columns plus a database-level bearing range check (0–360°).
+- **Still waiting on**: what the bearing physically refers to on the ground (e.g. "towards the next tower" vs. some other design reference) before this can be wired into the UI or before a real DXF template can be parsed correctly — the math above is convention-agnostic and correct regardless, but the *meaning* of the number needs to be nailed down before real data flows through it.
