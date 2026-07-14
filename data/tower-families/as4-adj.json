@@ -1,0 +1,27 @@
+{
+  "_fixtureNote": "STUB ONLY. AS4 ADJ (junction tower) is structurally more complex than the angle-band families — it has triple cross-arms per level (for the 3-way junction) which didn't resolve into a clean common-portion sum on this pass, so I'm not confident enough in the item-level breakdown to publish it. The overall common-portion total stated on the drawing (140,885kg) and family category/angle range are correct. If you need this family working, either transcribe it directly from the drawing yourself (same pattern as the other families) or send me a cleaner extract and I'll apply the same reconciliation method used for AS4 AD/BD.",
+
+  "familyId": "AS4_ADJ",
+  "displayName": "AS4 ADJ Type Tower (Junction)",
+  "category": "junction",
+  "minAngleDeg": 0,
+  "maxAngleDeg": 45,
+  "structuralGrade": null,
+  "standardLegMm": 4500,
+  "sourceDrawing": "TWR_STD-BB-AS4ADJ-TOW-KLD-S-0003",
+
+  "commonPortion": [],
+  "heightVariants": [],
+  "legExtensionOptions": [
+    { "deltaM": -3, "label": "-3M LEG EXTENSION", "unitWeightKg": 2341, "quantity": 4 },
+    { "deltaM": -2, "label": "-2M LEG EXTENSION", "unitWeightKg": 2732, "quantity": 4 },
+    { "deltaM": -1, "label": "-1M LEG EXTENSION", "unitWeightKg": 3122, "quantity": 4 },
+    { "deltaM": 0, "label": "±0M LEG EXTENSION", "unitWeightKg": 3456, "quantity": 4 },
+    { "deltaM": 1, "label": "+1M LEG EXTENSION", "unitWeightKg": 3881, "quantity": 4 },
+    { "deltaM": 2, "label": "+2M LEG EXTENSION", "unitWeightKg": 4241, "quantity": 4 },
+    { "deltaM": 3, "label": "+3M LEG EXTENSION", "unitWeightKg": 4906, "quantity": 4 },
+    { "deltaM": 4, "label": "+4M LEG EXTENSION", "unitWeightKg": 5387, "quantity": 4 },
+    { "deltaM": 5, "label": "+5M LEG EXTENSION", "unitWeightKg": 5840, "quantity": 4 },
+    { "deltaM": 6, "label": "+6M LEG EXTENSION", "unitWeightKg": 6490, "quantity": 4 }
+  ]
+}

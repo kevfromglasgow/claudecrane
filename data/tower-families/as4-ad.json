@@ -1,0 +1,372 @@
+{
+  "_fixtureNote": "REAL data, transcribed from the AS4 AD Type Tower (0-2 deg) weight diagram (TWR_STD-BB-AS4AD-TOW-KLD-S-0003) in Tower Types - Merged.pdf. Every variant below was cross-checked against the manufacturer's own printed 'TOWER WEIGHT Kgs' total using: commonPortion + additionalComponents + (\u00b10m leg extension, 4 legs) = printed total. All 7 variants reconciled to an EXACT integer match \u2014 see scripts/reconcile_check.py. Weights are 'for erection purpose only' per the source drawing's own disclaimer, not for manufacture/payment.",
+  "_importantModelingNote": "The manufacturer's printed 'TOWER WEIGHT Kgs' total for every variant INCLUDES the \u00b10m leg extension (4 legs x 913kg = 3652kg) baked in by default \u2014 legs are not an optional add-on, every tower has SOME leg length and \u00b10m is the standard/baseline one. printedTotalWeightKg below already includes this. When your calculation layer computes an actual lift weight, it must ALWAYS add whichever legExtensionOptions entry the user selects (defaulting to deltaM=0) \u2014 never treat 'no leg extension selected' as zero weight.",
+  "familyId": "AS4_AD",
+  "displayName": "AS4 AD Type Tower (0-2 deg)",
+  "category": "suspension",
+  "minAngleDeg": 0,
+  "maxAngleDeg": 2,
+  "structuralGrade": "AD",
+  "standardLegMm": 4500,
+  "sourceDrawing": "TWR_STD-BB-AS4AD-TOW-KLD-S-0003",
+  "commonPortion": [
+    {
+      "id": "panel_6",
+      "name": "Panel-6",
+      "weightTonnes": 7.086,
+      "quantity": 1,
+      "drawingItemRef": "A"
+    },
+    {
+      "id": "panel_5",
+      "name": "Panel-5",
+      "weightTonnes": 4.144,
+      "quantity": 1
+    },
+    {
+      "id": "panel_4",
+      "name": "Panel-4",
+      "weightTonnes": 4.501,
+      "quantity": 1
+    },
+    {
+      "id": "panel_3",
+      "name": "Panel-3",
+      "weightTonnes": 6.095,
+      "quantity": 1
+    },
+    {
+      "id": "panel_2",
+      "name": "Panel-2",
+      "weightTonnes": 3.143,
+      "quantity": 1
+    },
+    {
+      "id": "panel_1",
+      "name": "Panel-1",
+      "weightTonnes": 1.514,
+      "quantity": 1
+    },
+    {
+      "id": "top_cross_arm",
+      "name": "Top Cross Arm",
+      "weightTonnes": 1.507,
+      "quantity": 2
+    },
+    {
+      "id": "middle_cross_arm",
+      "name": "Middle Cross Arm",
+      "weightTonnes": 2.3,
+      "quantity": 2
+    },
+    {
+      "id": "bottom_cross_arm",
+      "name": "Bottom Cross Arm",
+      "weightTonnes": 1.542,
+      "quantity": 2
+    },
+    {
+      "id": "plan_views_a_a_c_c",
+      "name": "Plan Views A-A & C-C",
+      "weightTonnes": 0.476,
+      "quantity": 1
+    }
+  ],
+  "heightVariants": [
+    {
+      "variantId": "M3",
+      "label": "M3 TOWER (MIN. HT. TOWER)",
+      "printedTotalWeightKg": 42211,
+      "additionalComponents": [
+        {
+          "id": "shared_bracing_m7_8",
+          "name": "Plan Bracing at M7.8 Level on M3, E6, E9, E12 & E15 Towers (Plan H-H)",
+          "weightTonnes": 0.902,
+          "quantity": 1,
+          "drawingItemRef": "B",
+          "notes": "Shared item \u2014 applies to M3, E6, E9, E12, E15 variants in this family, NOT to STD or E3.",
+          "craneLift": false
+        }
+      ]
+    },
+    {
+      "variantId": "STD",
+      "label": "STD.HEIGHT",
+      "printedTotalWeightKg": 45972,
+      "additionalComponents": [
+        {
+          "id": "std_body_extension",
+          "name": "Standard Body Extension",
+          "weightTonnes": 3.586,
+          "quantity": 1,
+          "drawingItemRef": "C"
+        },
+        {
+          "id": "std_plan_bracing_m4_8",
+          "name": "Plan Bracing at M4.8 Level on STD Height Tower (Plan F-F)",
+          "weightTonnes": 1.077,
+          "quantity": 1,
+          "drawingItemRef": "D",
+          "craneLift": false
+        }
+      ]
+    },
+    {
+      "variantId": "E3",
+      "label": "E3 TOWER",
+      "printedTotalWeightKg": 47601,
+      "additionalComponents": [
+        {
+          "id": "e3_body_extension",
+          "name": "E3 Body Extension",
+          "weightTonnes": 5.175,
+          "quantity": 1,
+          "drawingItemRef": "E"
+        },
+        {
+          "id": "e3_plan_bracing_m1_8",
+          "name": "Plan Bracing at M1.8 Level on E3 Tower (Plan N-N)",
+          "weightTonnes": 1.117,
+          "quantity": 1,
+          "drawingItemRef": "F",
+          "craneLift": false
+        }
+      ]
+    },
+    {
+      "variantId": "E6",
+      "label": "E6 TOWER",
+      "printedTotalWeightKg": 52345,
+      "additionalComponents": [
+        {
+          "id": "e6_body_extn_top_4_5m",
+          "name": "E6 Body Extn Top 4.5M",
+          "weightTonnes": 3.551,
+          "quantity": 1,
+          "drawingItemRef": "P"
+        },
+        {
+          "id": "e6_body_extn_bottom_4_5m",
+          "name": "E6 Body Extn Bottom 4.5M",
+          "weightTonnes": 5.21,
+          "quantity": 1,
+          "drawingItemRef": "R"
+        },
+        {
+          "id": "e6_plan_bracing_e1_2",
+          "name": "Plan Bracing at E1.2 Level on E6 Tower (Plan L-L)",
+          "weightTonnes": 1.373,
+          "quantity": 1,
+          "drawingItemRef": "S",
+          "craneLift": false
+        },
+        {
+          "id": "shared_bracing_m7_8",
+          "name": "Plan Bracing at M7.8 Level on M3, E6, E9, E12 & E15 Towers (Plan H-H)",
+          "weightTonnes": 0.902,
+          "quantity": 1,
+          "drawingItemRef": "B",
+          "craneLift": false
+        }
+      ]
+    },
+    {
+      "variantId": "E9",
+      "label": "E9 TOWER",
+      "printedTotalWeightKg": 54260,
+      "additionalComponents": [
+        {
+          "id": "e9_body_extn_top_7_5m",
+          "name": "E9 Body Extn Top 7.5M",
+          "weightTonnes": 5.36,
+          "quantity": 1,
+          "drawingItemRef": "T",
+          "notes": "Top/bottom assignment for T/U inferred from description order, not directly confirmed against a clean drawing table \u2014 total is verified exact regardless."
+        },
+        {
+          "id": "e9_body_extn_bottom_4_5m",
+          "name": "E9 Body Extn Bottom 4.5M",
+          "weightTonnes": 6.689,
+          "quantity": 1,
+          "drawingItemRef": "U"
+        },
+        {
+          "id": "shared_bracing_m7_8",
+          "name": "Plan Bracing at M7.8 Level on M3, E6, E9, E12 & E15 Towers (Plan H-H)",
+          "weightTonnes": 0.902,
+          "quantity": 1,
+          "drawingItemRef": "B",
+          "craneLift": false
+        }
+      ]
+    },
+    {
+      "variantId": "E12",
+      "label": "E12 TOWER",
+      "printedTotalWeightKg": 58824,
+      "additionalComponents": [
+        {
+          "id": "e12_body_extn_top_4_5m",
+          "name": "E12 Body Extn Top 4.5M",
+          "weightTonnes": 3.568,
+          "quantity": 1,
+          "drawingItemRef": "V1"
+        },
+        {
+          "id": "e12_plan_bracing_m3_3",
+          "name": "Plan Bracing at M3.3 Level on E12 Tower (Plan Q-Q)",
+          "weightTonnes": 0.799,
+          "quantity": 1,
+          "drawingItemRef": "V2",
+          "notes": "Item-to-value pairing among the E12 sub-items is inferred from description order + magnitude (bracing items are consistently smaller than body-extension pieces across every other variant checked); the TOTAL for E12 is verified exact regardless of this internal ordering.",
+          "craneLift": false
+        },
+        {
+          "id": "e12_body_extn_middle_6_0m",
+          "name": "E12 Body Extn Middle 6.0M",
+          "weightTonnes": 4.955,
+          "quantity": 1,
+          "drawingItemRef": "V3"
+        },
+        {
+          "id": "e12_body_extn_bottom_4_5m",
+          "name": "E12 Body Extn Bottom 8.0M",
+          "weightTonnes": 5.57,
+          "quantity": 1,
+          "drawingItemRef": "V4"
+        },
+        {
+          "id": "e12_plan_bracing_e7_2",
+          "name": "Plan Bracing at E7.2 Level on E12 Tower (Plan S-S)",
+          "weightTonnes": 1.721,
+          "quantity": 1,
+          "drawingItemRef": "W",
+          "craneLift": false
+        },
+        {
+          "id": "shared_bracing_m7_8",
+          "name": "Plan Bracing at M7.8 Level on M3, E6, E9, E12 & E15 Towers (Plan H-H)",
+          "weightTonnes": 0.902,
+          "quantity": 1,
+          "drawingItemRef": "B",
+          "craneLift": false
+        }
+      ]
+    },
+    {
+      "variantId": "E15",
+      "label": "E15 TOWER",
+      "printedTotalWeightKg": 61737,
+      "additionalComponents": [
+        {
+          "id": "e15_body_extn_top_6_5m",
+          "name": "E15 Body Extn Top 6.5M",
+          "weightTonnes": 4.876,
+          "quantity": 1,
+          "drawingItemRef": "X1"
+        },
+        {
+          "id": "e15_plan_bracing_m1_3",
+          "name": "Plan Bracing at M1.3 Level on E15 Tower (Plan T-T)",
+          "weightTonnes": 0.884,
+          "quantity": 1,
+          "drawingItemRef": "X2",
+          "notes": "Same internal-ordering caveat as E12 \u2014 total is exact, sub-item labelling inferred by magnitude pattern.",
+          "craneLift": false
+        },
+        {
+          "id": "e15_body_extn_middle_7_0m",
+          "name": "E15 Body Extn Middle 7.0M",
+          "weightTonnes": 5.588,
+          "quantity": 1,
+          "drawingItemRef": "X3"
+        },
+        {
+          "id": "e15_body_extn_bottom_4_5m",
+          "name": "E15 Body Extn Bottom 4.5M",
+          "weightTonnes": 6.32,
+          "quantity": 1,
+          "drawingItemRef": "X4"
+        },
+        {
+          "id": "e15_plan_bracing_e10_2",
+          "name": "Plan Bracing at E10.2 Level on E15 Tower (Plan V-V)",
+          "weightTonnes": 1.858,
+          "quantity": 1,
+          "drawingItemRef": "Y",
+          "craneLift": false
+        },
+        {
+          "id": "shared_bracing_m7_8",
+          "name": "Plan Bracing at M7.8 Level on M3, E6, E9, E12 & E15 Towers (Plan H-H)",
+          "weightTonnes": 0.902,
+          "quantity": 1,
+          "drawingItemRef": "B",
+          "craneLift": false
+        }
+      ]
+    }
+  ],
+  "legExtensionOptions": [
+    {
+      "deltaM": -3,
+      "label": "-3M LEG EXTENSION",
+      "unitWeightKg": 472,
+      "quantity": 4
+    },
+    {
+      "deltaM": -2,
+      "label": "-2M LEG EXTENSION",
+      "unitWeightKg": 629,
+      "quantity": 4
+    },
+    {
+      "deltaM": -1,
+      "label": "-1M LEG EXTENSION",
+      "unitWeightKg": 767,
+      "quantity": 4
+    },
+    {
+      "deltaM": 0,
+      "label": "\u00b10M LEG EXTENSION",
+      "unitWeightKg": 913,
+      "quantity": 4
+    },
+    {
+      "deltaM": 1,
+      "label": "+1M LEG EXTENSION",
+      "unitWeightKg": 1052,
+      "quantity": 4
+    },
+    {
+      "deltaM": 2,
+      "label": "+2M LEG EXTENSION",
+      "unitWeightKg": 1242,
+      "quantity": 4
+    },
+    {
+      "deltaM": 3,
+      "label": "+3M LEG EXTENSION",
+      "unitWeightKg": 1391,
+      "quantity": 4
+    },
+    {
+      "deltaM": 4,
+      "label": "+4M LEG EXTENSION",
+      "unitWeightKg": 1608,
+      "quantity": 4
+    },
+    {
+      "deltaM": 5,
+      "label": "+5M LEG EXTENSION",
+      "unitWeightKg": 1912,
+      "quantity": 4
+    },
+    {
+      "deltaM": 6,
+      "label": "+6M LEG EXTENSION",
+      "unitWeightKg": 2022,
+      "quantity": 4
+    }
+  ]
+}

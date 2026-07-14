@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["dom", "dom.iterable", "ES2020"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "allowJs": true,
+    "types": ["vitest/globals", "react", "node"],
+    "plugins": [{ "name": "next" }],
+    "paths": { "@/*": ["./*"] }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

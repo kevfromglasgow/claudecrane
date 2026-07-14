@@ -1,0 +1,11 @@
+{
+  "_fixtureNote": "Illustrative placeholder pad, loosely modelled on the shape of a typical site-survey polygon. Not tied to any real site.",
+  "padId": "pad_01",
+  "siteId": "example_site",
+  "corners": [
+    { "x": 0, "y": 0 },
+    { "x": 15, "y": 0 },
+    { "x": 15, "y": 10 },
+    { "x": 0, "y": 10 }
+  ]
+}

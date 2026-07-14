@@ -1,0 +1,51 @@
+{
+  "_fixtureNote": "PARTIAL — commonPortion below is verified exact (sums to stated 59116kg — this family uses distinct LONG/SHORT cross-arm designations rather than a single cross-arm type, plus an earthing arrangement item, reflecting the larger tower geometry at this angle band). legExtensionOptions verified against printed x4 totals. Height-variant itemization not attempted — see AS4 AD10's _fixtureNote for why.",
+
+  "familyId": "AS4_AD55",
+  "displayName": "AS4 AD55 Type Tower (25-55 deg)",
+  "category": "angle",
+  "minAngleDeg": 25,
+  "maxAngleDeg": 55,
+  "structuralGrade": "AD",
+  "standardLegMm": 4500,
+  "sourceDrawing": "TWR_STD-BB-AS4AD55-TOW-KLD-S-0003",
+
+  "commonPortion": [
+    { "id": "panel_6", "name": "Panel-6", "weightTonnes": 15.689, "quantity": 1 },
+    { "id": "panel_5", "name": "Panel-5", "weightTonnes": 9.225, "quantity": 1 },
+    { "id": "panel_4", "name": "Panel-4", "weightTonnes": 8.024, "quantity": 1 },
+    { "id": "panel_3", "name": "Panel-3", "weightTonnes": 7.624, "quantity": 1 },
+    { "id": "panel_2", "name": "Panel-2", "weightTonnes": 1.161, "quantity": 1 },
+    { "id": "panel_1", "name": "Panel-1", "weightTonnes": 1.501, "quantity": 1 },
+    { "id": "earthing_arrangement_panel_1", "name": "Earthing Arrangement at Panel 1", "weightTonnes": 0.710, "quantity": 1 },
+    { "id": "top_long_cross_arm", "name": "Top Long Cross Arm", "weightTonnes": 2.930, "quantity": 1 },
+    { "id": "top_short_cross_arm", "name": "Top Short Cross Arm", "weightTonnes": 1.338, "quantity": 1 },
+    { "id": "middle_long_cross_arm", "name": "Middle Long Cross Arm", "weightTonnes": 3.818, "quantity": 1 },
+    { "id": "middle_short_cross_arm", "name": "Middle Short Cross Arm", "weightTonnes": 2.130, "quantity": 1 },
+    { "id": "bottom_long_cross_arm", "name": "Bottom Long Cross Arm", "weightTonnes": 3.072, "quantity": 1 },
+    { "id": "bottom_short_cross_arm", "name": "Bottom Short Cross Arm", "weightTonnes": 1.894, "quantity": 1 }
+  ],
+
+  "heightVariants": [
+    { "variantId": "M6", "label": "M6 TOWER (MIN. HT. TOWER)", "additionalComponents": [], "notes": "Variant-to-total mapping not verified — see AS4 AD10 family _fixtureNote." },
+    { "variantId": "M3", "label": "M3 TOWER", "printedTotalWeightKg": 70103, "additionalComponents": [] },
+    { "variantId": "STD", "label": "STD.HEIGHT", "printedTotalWeightKg": 79601, "additionalComponents": [] },
+    { "variantId": "E3", "label": "E3 TOWER", "printedTotalWeightKg": 86320, "additionalComponents": [] },
+    { "variantId": "E6", "label": "E6 TOWER", "printedTotalWeightKg": 90266, "additionalComponents": [] },
+    { "variantId": "E9", "label": "E9 TOWER", "printedTotalWeightKg": 96485, "additionalComponents": [] },
+    { "variantId": "E12", "label": "E12 TOWER", "printedTotalWeightKg": 104789, "additionalComponents": [] }
+  ],
+
+  "legExtensionOptions": [
+    { "deltaM": -3, "label": "-3M LEG EXTENSION", "unitWeightKg": 1448, "quantity": 4 },
+    { "deltaM": -2, "label": "-2M LEG EXTENSION", "unitWeightKg": 1643, "quantity": 4 },
+    { "deltaM": -1, "label": "-1M LEG EXTENSION", "unitWeightKg": 1939, "quantity": 4 },
+    { "deltaM": 0, "label": "±0M LEG EXTENSION", "unitWeightKg": 2178, "quantity": 4 },
+    { "deltaM": 1, "label": "+1M LEG EXTENSION", "unitWeightKg": 2570, "quantity": 4 },
+    { "deltaM": 2, "label": "+2M LEG EXTENSION", "unitWeightKg": 2819, "quantity": 4 },
+    { "deltaM": 3, "label": "+3M LEG EXTENSION", "unitWeightKg": 3428, "quantity": 4 },
+    { "deltaM": 4, "label": "+4M LEG EXTENSION", "unitWeightKg": 3562, "quantity": 4 },
+    { "deltaM": 5, "label": "+5M LEG EXTENSION", "unitWeightKg": 3873, "quantity": 4 },
+    { "deltaM": 6, "label": "+6M LEG EXTENSION", "unitWeightKg": 4413, "quantity": 4 }
+  ]
+}

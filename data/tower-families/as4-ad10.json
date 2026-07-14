@@ -1,0 +1,59 @@
+{
+  "_fixtureNote": "PARTIAL — from AS4 AD10 Type Tower (0-10 deg) weight diagram in Tower Types - Merged.pdf. commonPortion and legExtensionOptions below are verified exact (commonPortion sums to the stated 46333kg; leg extension deltas checked against the printed x4 totals). heightVariants below only include what reconciled with high confidence (M6 base + M3's own addition). The mapping of the remaining printed variant TOTALS (STD/E3/E6/E9/E12) to their individual additionalComponents did NOT reconcile cleanly on the pass I ran — the source table's row/column order got scrambled somewhere in extraction and I was not able to re-derive it with confidence, unlike the AS4 AD/BD families where every variant matched exactly. Rather than guess, I've left printedTotalWeightKg populated (these ARE the totals stated on the drawing) but additionalComponents empty for STD/E3/E6/E9/E12 — cross-check these against the original drawing before relying on itemized component weights for this family. Common portion + leg extension + total-weight-only use is safe; per-item breakdown for this family is not yet trustworthy.",
+
+  "familyId": "AS4_AD10",
+  "displayName": "AS4 AD10 Type Tower (0-10 deg)",
+  "category": "angle",
+  "minAngleDeg": 0,
+  "maxAngleDeg": 10,
+  "structuralGrade": "AD",
+  "standardLegMm": 4500,
+  "sourceDrawing": "TWR_STD-BB-AS4AD10-TOW-KLD-S-0003",
+
+  "commonPortion": [
+    { "id": "panel_6", "name": "Panel-6", "weightTonnes": 6.784, "quantity": 1 },
+    { "id": "panel_5", "name": "Panel-5", "weightTonnes": 8.997, "quantity": 1 },
+    { "id": "panel_4", "name": "Panel-4", "weightTonnes": 9.358, "quantity": 1 },
+    { "id": "panel_3", "name": "Panel-3", "weightTonnes": 6.111, "quantity": 1 },
+    { "id": "panel_2", "name": "Panel-2", "weightTonnes": 0.774, "quantity": 1 },
+    { "id": "panel_1", "name": "Panel-1", "weightTonnes": 0.817, "quantity": 1 },
+    { "id": "top_cross_arm", "name": "Top Cross Arm", "weightTonnes": 1.807, "quantity": 2 },
+    { "id": "middle_cross_arm", "name": "Middle Cross Arm", "weightTonnes": 2.941, "quantity": 2 },
+    { "id": "bottom_cross_arm", "name": "Bottom Cross Arm", "weightTonnes": 1.998, "quantity": 2 }
+  ],
+
+  "heightVariants": [
+    {
+      "variantId": "M6",
+      "label": "M6 TOWER (MIN. HT. TOWER)",
+      "additionalComponents": [],
+      "notes": "This family's true minimum-height variant per the drawing's own elevation labelling. Which printed total column belongs to M6 vs which belongs to M3 was NOT unambiguous in extraction — see family-level _fixtureNote. Do not assume ordering."
+    },
+    {
+      "variantId": "M3",
+      "label": "M3 TOWER",
+      "printedTotalWeightKg": 53459,
+      "additionalComponents": [
+        { "id": "m3_body_extension", "name": "M3 Body Extension", "weightTonnes": 1.286, "quantity": 1, "notes": "Verified exact: commonPortion + (±0m leg ext x4) + 1286kg = 53459kg." }
+      ]
+    },
+    { "variantId": "STD", "label": "STD.HEIGHT", "printedTotalWeightKg": 60364, "additionalComponents": [] },
+    { "variantId": "E3", "label": "E3 TOWER", "printedTotalWeightKg": 65479, "additionalComponents": [] },
+    { "variantId": "E6", "label": "E6 TOWER", "printedTotalWeightKg": 68124, "additionalComponents": [] },
+    { "variantId": "E9", "label": "E9 TOWER", "printedTotalWeightKg": 72618, "additionalComponents": [] },
+    { "variantId": "E12", "label": "E12 TOWER", "printedTotalWeightKg": 76717, "additionalComponents": [] }
+  ],
+
+  "legExtensionOptions": [
+    { "deltaM": -3, "label": "-3M LEG EXTENSION", "unitWeightKg": 400, "quantity": 4 },
+    { "deltaM": -2, "label": "-2M LEG EXTENSION", "unitWeightKg": 1071, "quantity": 4 },
+    { "deltaM": -1, "label": "-1M LEG EXTENSION", "unitWeightKg": 1158, "quantity": 4 },
+    { "deltaM": 0, "label": "±0M LEG EXTENSION", "unitWeightKg": 1460, "quantity": 4 },
+    { "deltaM": 1, "label": "+1M LEG EXTENSION", "unitWeightKg": 1649, "quantity": 4 },
+    { "deltaM": 2, "label": "+2M LEG EXTENSION", "unitWeightKg": 1946, "quantity": 4 },
+    { "deltaM": 3, "label": "+3M LEG EXTENSION", "unitWeightKg": 2213, "quantity": 4 },
+    { "deltaM": 4, "label": "+4M LEG EXTENSION", "unitWeightKg": 2455, "quantity": 4 },
+    { "deltaM": 5, "label": "+5M LEG EXTENSION", "unitWeightKg": 2835, "quantity": 4 },
+    { "deltaM": 6, "label": "+6M LEG EXTENSION", "unitWeightKg": 3120, "quantity": 4 }
+  ]
+}

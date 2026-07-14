@@ -1,0 +1,27 @@
+{
+  "_fixtureNote": "STUB ONLY — same situation as AS4 ADJ. Overall common-portion total stated on the drawing (118,871kg) and family category are correct; item-level breakdown not confidently extracted this pass.",
+
+  "familyId": "AS4_ADT",
+  "displayName": "AS4 ADT Type Tower (Terminal)",
+  "category": "terminal",
+  "minAngleDeg": 0,
+  "maxAngleDeg": 90,
+  "structuralGrade": null,
+  "standardLegMm": 4500,
+  "sourceDrawing": "TWR_STD-BB-AS4ADT-TOW-KLD-S-0003",
+
+  "commonPortion": [],
+  "heightVariants": [],
+  "legExtensionOptions": [
+    { "deltaM": -3, "label": "-3M LEG EXTENSION", "unitWeightKg": 2341, "quantity": 4 },
+    { "deltaM": -2, "label": "-2M LEG EXTENSION", "unitWeightKg": 2732, "quantity": 4 },
+    { "deltaM": -1, "label": "-1M LEG EXTENSION", "unitWeightKg": 3122, "quantity": 4 },
+    { "deltaM": 0, "label": "±0M LEG EXTENSION", "unitWeightKg": 3456, "quantity": 4 },
+    { "deltaM": 1, "label": "+1M LEG EXTENSION", "unitWeightKg": 3881, "quantity": 4 },
+    { "deltaM": 2, "label": "+2M LEG EXTENSION", "unitWeightKg": 4241, "quantity": 4 },
+    { "deltaM": 3, "label": "+3M LEG EXTENSION", "unitWeightKg": 4906, "quantity": 4 },
+    { "deltaM": 4, "label": "+4M LEG EXTENSION", "unitWeightKg": 5387, "quantity": 4 },
+    { "deltaM": 5, "label": "+5M LEG EXTENSION", "unitWeightKg": 5840, "quantity": 4 },
+    { "deltaM": 6, "label": "+6M LEG EXTENSION", "unitWeightKg": 6490, "quantity": 4 }
+  ]
+}
