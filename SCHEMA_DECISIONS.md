@@ -196,3 +196,14 @@ Confirmed: Option B (template-per-family + bearing-per-site), since the layout g
 - `TowerInstance` gained optional `towerCentreEasting`/`towerCentreNorthing`/`bearingDeg` fields — optional so existing sites without surveyed geometry keep working for everything that doesn't need it.
 - `sql/migration_002_add_site_geometry.sql` — `ALTER TABLE` migration (not a fresh `CREATE TABLE`, since the `sites` table already exists) adding the three new columns plus a database-level bearing range check (0–360°).
 - **Still waiting on**: what the bearing physically refers to on the ground (e.g. "towards the next tower" vs. some other design reference) before this can be wired into the UI or before a real DXF template can be parsed correctly — the math above is convention-agnostic and correct regardless, but the *meaning* of the number needs to be nailed down before real data flows through it.
+
+## Session 8 — Bearing convention resolved: it's the span bisector
+
+Confirmed from a diagram: the template's reference bearing is the **bisector** of the incoming span (previous tower → this tower) and outgoing span (this tower → next tower) bearings — matching how angle towers are actually designed (cross-arms oriented to bisect the deviation angle, balancing the horizontal pull from both spans). This one formula correctly covers suspension towers too, since incoming ≈ outgoing bearing there anyway — no special-casing between tower categories needed.
+
+- `bearingBetween(from, to)` — standard surveying bearing between two coordinates.
+- `bisectorBearing(bearingIn, bearingOut)` — computed via **vector addition, not naive angle averaging** (naive averaging breaks across the 0/360° wraparound: e.g. bearings 350° and 10° naively average to 180°, which is wrong; the correct bisector is 0°). Verified with a dedicated wraparound test.
+- `derivePlacementBearing({ previousTower?, thisTower, nextTower? })` — the actual entry point: give it coordinates (which you likely already have from the line schedule) rather than a manually-calculated bearing number. Handles the true-terminal-tower case (only one adjacent tower known) by falling back to that single span's bearing.
+- 15 new tests (30 total in this file now), covering the cardinal directions, the wraparound case, a symmetric 90° bend, a near-straight (small-deviation) case, and both terminal-tower fallback directions.
+
+**Still open**: this hasn't been wired into the site-creation UI yet (no form fields for previous/next tower coordinates), and no real DXF template has been received yet to test the placement math against actual family geometry.

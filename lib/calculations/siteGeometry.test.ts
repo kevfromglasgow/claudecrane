@@ -5,6 +5,10 @@ import {
   placeSiteLayout,
   planDistance,
   maxRadiusToFootprint,
+  bearingBetween,
+  bisectorBearing,
+  derivePlacementBearing,
+  BearingError,
   type SiteLayoutTemplate,
   type SitePlacement,
 } from './siteGeometry';
@@ -140,5 +144,90 @@ describe('maxRadiusToFootprint', () => {
 
   it('throws rather than silently returning 0 for an empty footprint', () => {
     expect(() => maxRadiusToFootprint({ x: 0, y: 0 }, [])).toThrow(RangeError);
+  });
+});
+
+describe('bearingBetween', () => {
+  it('due north is bearing 0', () => {
+    expect(bearingBetween({ x: 0, y: 0 }, { x: 0, y: 10 })).toBeCloseTo(0, 5);
+  });
+  it('due east is bearing 90', () => {
+    expect(bearingBetween({ x: 0, y: 0 }, { x: 10, y: 0 })).toBeCloseTo(90, 5);
+  });
+  it('due south is bearing 180', () => {
+    expect(bearingBetween({ x: 0, y: 0 }, { x: 0, y: -10 })).toBeCloseTo(180, 5);
+  });
+  it('due west is bearing 270', () => {
+    expect(bearingBetween({ x: 0, y: 0 }, { x: -10, y: 0 })).toBeCloseTo(270, 5);
+  });
+  it('throws for two identical points', () => {
+    expect(() => bearingBetween({ x: 5, y: 5 }, { x: 5, y: 5 })).toThrow(BearingError);
+  });
+});
+
+describe('bisectorBearing', () => {
+  it('two identical bearings bisect to themselves (a dead-straight suspension tower)', () => {
+    expect(bisectorBearing(45, 45)).toBeCloseTo(45, 5);
+  });
+
+  it('a symmetric 90deg bend (0 and 90) bisects to 45', () => {
+    expect(bisectorBearing(0, 90)).toBeCloseTo(45, 5);
+  });
+
+  it('correctly handles wraparound across 0/360 (350 and 10 should bisect to 0, NOT the naive average of 180)', () => {
+    expect(bisectorBearing(350, 10)).toBeCloseTo(0, 3);
+  });
+
+  it('a near-straight-through tower (small deviation) bisects close to the shared direction', () => {
+    // e.g. an AD10 tower deviating slightly: incoming 88, outgoing 92
+    expect(bisectorBearing(88, 92)).toBeCloseTo(90, 5);
+  });
+
+  it('throws for exactly opposite bearings (undefined 180deg bisector)', () => {
+    expect(() => bisectorBearing(0, 180)).toThrow(BearingError);
+    expect(() => bisectorBearing(45, 225)).toThrow(BearingError);
+  });
+});
+
+describe('derivePlacementBearing', () => {
+  it('uses the bisector when both previous and next tower coordinates are known', () => {
+    // previous tower due south, next tower due east -> incoming bearing
+    // (south->this, i.e. heading north) = 0, outgoing (this->east) = 90
+    // -> bisector 45
+    const bearing = derivePlacementBearing({
+      previousTower: { x: 0, y: -100 },
+      thisTower: { x: 0, y: 0 },
+      nextTower: { x: 100, y: 0 },
+    });
+    expect(bearing).toBeCloseTo(45, 3);
+  });
+
+  it('falls back to the single known span for a terminal tower (next only)', () => {
+    const bearing = derivePlacementBearing({
+      thisTower: { x: 0, y: 0 },
+      nextTower: { x: 0, y: 100 },
+    });
+    expect(bearing).toBeCloseTo(0, 5);
+  });
+
+  it('falls back to the single known span for a terminal tower (previous only)', () => {
+    const bearing = derivePlacementBearing({
+      previousTower: { x: -100, y: 0 },
+      thisTower: { x: 0, y: 0 },
+    });
+    expect(bearing).toBeCloseTo(90, 5);
+  });
+
+  it('throws when neither adjacent tower is known', () => {
+    expect(() => derivePlacementBearing({ thisTower: { x: 0, y: 0 } })).toThrow(BearingError);
+  });
+
+  it("a realistic straight-through suspension tower: previous/this/next collinear gives that line's bearing", () => {
+    const bearing = derivePlacementBearing({
+      previousTower: { x: 0, y: -200 },
+      thisTower: { x: 0, y: 0 },
+      nextTower: { x: 0, y: 200 },
+    });
+    expect(bearing).toBeCloseTo(0, 5);
   });
 });

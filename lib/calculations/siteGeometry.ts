@@ -46,6 +46,98 @@ export interface SitePlacement {
   bearingDeg: number;
 }
 
+// ------------------------------------------------------------
+// DERIVING THE PLACEMENT BEARING FROM ADJACENT TOWER COORDINATES
+//
+// Confirmed convention: the template's reference ("forward") axis
+// represents the tower's overall line direction — the BISECTOR of
+// the incoming span (previous tower -> this tower) and outgoing span
+// (this tower -> next tower) bearings. This matches real angle-tower
+// design (cross-arms/body oriented to bisect the deviation angle,
+// balancing the horizontal pull from both spans) and degenerates
+// correctly for suspension towers, where incoming and outgoing
+// bearing are essentially identical anyway — no special-casing
+// needed between tower categories, one formula covers both.
+//
+// Rather than asking for a manually-calculated bearing number (error-
+// prone), this is derived from coordinates you likely already have:
+// the previous tower's centre, this tower's centre, and the next
+// tower's centre. For a true end-of-line terminal tower, only one
+// adjacent tower exists — that single span's bearing is used directly
+// (no bisector needed, nothing to average against).
+// ------------------------------------------------------------
+
+export class BearingError extends Error {}
+
+/** Standard surveying bearing (degrees clockwise from north) from one point to another. */
+export function bearingBetween(from: Point2D, to: Point2D): number {
+  const dEasting = to.x - from.x;
+  const dNorthing = to.y - from.y;
+  if (dEasting === 0 && dNorthing === 0) {
+    throw new BearingError('Cannot compute a bearing between two identical points');
+  }
+  const rad = Math.atan2(dEasting, dNorthing); // atan2(x, y) gives azimuth directly under this convention
+  const deg = (rad * 180) / Math.PI;
+  return (deg + 360) % 360;
+}
+
+/**
+ * Bisector of two bearings, computed via vector addition (NOT naive
+ * angle averaging, which breaks across the 0/360° wraparound — e.g.
+ * naively averaging 350° and 10° gives 180°, the wrong answer; vector
+ * addition correctly gives 0°/360°).
+ *
+ * Throws if the two bearings are exactly opposite (180° apart) — the
+ * bisector is undefined in that degenerate case (would represent an
+ * impossible 180° line deviation, not a realistic tower).
+ */
+export function bisectorBearing(bearingInDeg: number, bearingOutDeg: number): number {
+  const toVector = (deg: number) => {
+    const rad = (deg * Math.PI) / 180;
+    return { x: Math.sin(rad), y: Math.cos(rad) };
+  };
+  const vIn = toVector(bearingInDeg);
+  const vOut = toVector(bearingOutDeg);
+  const sum = { x: vIn.x + vOut.x, y: vIn.y + vOut.y };
+
+  if (Math.hypot(sum.x, sum.y) < 1e-9) {
+    throw new BearingError(
+      `Bearings ${bearingInDeg}\u00b0 and ${bearingOutDeg}\u00b0 are exactly opposite \u2014 bisector is undefined for a 180\u00b0 deviation`
+    );
+  }
+  const rad = Math.atan2(sum.x, sum.y);
+  const deg = (rad * 180) / Math.PI;
+  return (deg + 360) % 360;
+}
+
+export interface AdjacentTowerCoordinates {
+  previousTower?: Point2D;
+  thisTower: Point2D;
+  nextTower?: Point2D;
+}
+
+/**
+ * Computes the template placement bearing for a site from its own
+ * coordinate plus whichever adjacent tower coordinate(s) are known:
+ *  - both previous AND next known -> bisector of the two spans
+ *  - only one known (true terminal tower) -> that single span's bearing
+ *  - neither known -> throws (nothing to derive a bearing from)
+ */
+export function derivePlacementBearing(coords: AdjacentTowerCoordinates): number {
+  const { previousTower, thisTower, nextTower } = coords;
+
+  if (previousTower && nextTower) {
+    const bearingIn = bearingBetween(previousTower, thisTower);
+    const bearingOut = bearingBetween(thisTower, nextTower);
+    return bisectorBearing(bearingIn, bearingOut);
+  }
+  if (nextTower) return bearingBetween(thisTower, nextTower);
+  if (previousTower) return bearingBetween(previousTower, thisTower);
+
+  throw new BearingError('At least one adjacent tower coordinate (previous or next) is required to derive a placement bearing');
+}
+
+
 /**
  * Rotates a single local (template-frame) offset into a real-world
  * (easting, northing) OFFSET from the tower centre — does not yet add
